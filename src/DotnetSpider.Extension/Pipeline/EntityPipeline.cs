@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using DotnetSpider.Extraction.Model;
 using DotnetSpider.Extension.Model;
+using System.Net.Http;
 
 namespace DotnetSpider.Extension.Pipeline
 {

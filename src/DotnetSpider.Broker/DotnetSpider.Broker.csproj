@@ -19,7 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DotnetSpider.Core\DotnetSpider.Core.csproj" />
     <ProjectReference Include="..\DotnetSpider.Downloader\DotnetSpider.Downloader.csproj" />
+    <ProjectReference Include="..\DotnetSpider.Extension\DotnetSpider.Extension.csproj" />
+    <ProjectReference Include="..\DotnetSpider.Proxy\DotnetSpider.Proxy.csproj" />
+    <ProjectReference Include="..\DotnetSpider.Sample\DotnetSpider.Sample.csproj" />
   </ItemGroup>
 
 </Project>

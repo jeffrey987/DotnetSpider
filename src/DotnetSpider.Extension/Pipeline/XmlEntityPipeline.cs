@@ -9,13 +9,15 @@ using DotnetSpider.Extraction.Model;
 using System.Xml;
 using System.Xml.Serialization;
 using System;
+using System.Net.Http;
+using System.Net;
 
 namespace DotnetSpider.Extension.Pipeline
 {
 	/// <summary>
 	/// 把解析到的爬虫实体数据序列化成JSON并存到文件中
 	/// </summary>
-	public class XmlFileEntityPipeline : EntityPipeline
+	public class XmlEntityPipeline : EntityPipeline
 	{
 		private readonly Dictionary<string, StreamWriter> _writers = new Dictionary<string, StreamWriter>();
 		/// <summary>
@@ -53,30 +55,12 @@ namespace DotnetSpider.Extension.Pipeline
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		protected override int Process(IEnumerable<IBaseEntity> datas, dynamic sender = null)
 		{
+
 			if (datas == null || datas.Count() == 0)
 			{
 				return 0;
 			}
-
-			var tableInfo = new TableInfo(datas.First().GetType());
-
-			StreamWriter writer;
-			//var identity = GetIdentity(sender);
-			var dataFolder = Path.Combine(Env.BaseDirectory, "rss", DateTime.Now.ToString("yyyyMMddHHmmss"));
-			var jsonFile = Path.Combine(dataFolder, $"{tableInfo.Schema.FullName}.xml");
-			if (_writers.ContainsKey(jsonFile))
-			{
-				writer = _writers[jsonFile];
-			}
-			else
-			{
-				if (!Directory.Exists(dataFolder))
-				{
-					Directory.CreateDirectory(dataFolder);
-				}
-				writer = new StreamWriter(File.OpenWrite(jsonFile), Encoding.UTF8);
-				_writers.Add(jsonFile, writer);
-			}
+		
 			Rss feed = new Rss();
 			feed.channel.title = Title;
 			feed.channel.link = Link;
@@ -95,9 +79,13 @@ namespace DotnetSpider.Extension.Pipeline
 				feed.channel.item.Add(model);
 			}
 			var serializer = new XmlSerializer(typeof(Rss));
-			serializer.Serialize(writer, feed);
+			System.Net.Http.HttpRequestMessage _request = new System.Net.Http.HttpRequestMessage();
 
-
+			HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+			
+			Stream stream = new MemoryStream();
+			serializer.Serialize(stream,feed);			
+			response.Content = new StreamContent(stream);
 			return datas.Count();
 		}
 
