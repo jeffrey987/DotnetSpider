@@ -31,8 +31,9 @@
     <PackageReference Include="MailKit" Version="2.0.6" />
     <PackageReference Include="EPPlus" Version="4.5.2.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Selenium.WebDriver" Version="3.14.0" />
-    <PackageReference Include="MySqlConnector" Version="0.45.0" />
+    <PackageReference Include="MySqlConnector" Version="0.46.1" />
     <ProjectReference Include="..\DotnetSpider.Core\DotnetSpider.Core.csproj" />
     <ProjectReference Include="..\DotnetSpider.Downloader\DotnetSpider.Downloader.csproj" />
     <ProjectReference Include="..\DotnetSpider.Extraction\DotnetSpider.Extraction.csproj" />

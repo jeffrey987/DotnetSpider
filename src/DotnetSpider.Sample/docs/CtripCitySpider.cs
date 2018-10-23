@@ -47,6 +47,8 @@ namespace DotnetSpider.Sample.docs
 			[Unique("CITYID_RUNID")]
 			[Field(Expression = "Today", Type = SelectorType.Enviroment)]
 			public DateTime run_id { get; set; }
+
+		
 		}
 	}
 }

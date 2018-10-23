@@ -19,6 +19,8 @@ namespace DotnetSpider.Sample.docs
 		{
 			[Field(Expression = "<a.*?园子</a>", Type = SelectorType.Regex, Arguments = "1")]
 			public string Category { get; set; }
+
+	
 		}
 	}
 }

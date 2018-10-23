@@ -12,5 +12,6 @@ namespace DotnetSpider.Extension.Model
 		[Column]
 		[Primary]
 		public int Id { get; set; }
+
 	}
 }

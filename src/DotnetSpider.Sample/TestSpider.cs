@@ -1,70 +1,70 @@
 ﻿using DotnetSpider.Core;
+using DotnetSpider.Core.Processor.RequestExtractor;
 using DotnetSpider.Extension;
 using DotnetSpider.Extension.Model;
 using DotnetSpider.Extension.Pipeline;
-using DotnetSpider.Extraction;
-using DotnetSpider.Extraction.Model;
+using DotnetSpider.Extension.Processor;
 using DotnetSpider.Extraction.Model.Attribute;
 using DotnetSpider.Extraction.Model.Formatter;
-using System.Collections.Generic;
+using System;
+
 
 namespace DotnetSpider.Sample
 {
 	[TaskName("TestSpider")]
 	public class TestSpider : EntitySpider
 	{
-		public TestSpider() : base("TestSpider")
+		public TestSpider()
 		{
 		}
 
 		protected override void OnInit(params string[] arguments)
 		{
-			var word = "可乐|雪碧";
-			AddRequest(string.Format("http://news.baidu.com/ns?word={0}&tn=news&from=news&cl=2&pn=0&rn=20&ct=1", word), new Dictionary<string, dynamic> { { "Keyword", word } });
-			AddEntityType<BaiduSearchEntry>();
-			AddPipeline(new MySqlEntityPipeline("Database='mysql';Data Source=localhost;User ID=root;Port=3306;SslMode=None;"));
+			AddRequests("https://www.52pojie.cn/forum.php?mod=guide&view=hot&page=1");
+			EntityProcessor<BaiduSearchEntry> tempmodel = AddEntityType<BaiduSearchEntry>();
+			AddPipeline(new XmlFileEntityPipeline());
+			//AddEntityType<BaiduSearchEntry>().SetRequestExtractor(new AutoIncrementRequestExtractor("page=1"));
 		}
-
-		[Schema("baidu", "baidu_search_entity_model")]
-		[Entity(Expression = ".//div[@class='result']", Type = SelectorType.XPath)]
-		class BaiduSearchEntry : BaseEntity
+	
+		[Schema("baidu", "52POJIE")]
+		[Entity(Expression = ".//tbody ")]
+		public class BaiduSearchEntry : BaseEntity
 		{
-			[Column]
-			[Field(Expression = "Keyword", Type = SelectorType.Enviroment)]
-			public string Keyword { get; set; }
+
+			//[Column]
+			//[Field(Expression = "Keyword", Type = SelectorType.Enviroment)]
+			//public string Keyword { get; set; }
 
 			[Column]
-			[Field(Expression = ".//h3[@class='c-title']/a")]
+			[Field(Expression = ".//a[@class='xst']")]
 			[ReplaceFormatter(NewValue = "", OldValue = "<em>")]
 			[ReplaceFormatter(NewValue = "", OldValue = "</em>")]
-			public string Title { get; set; }
+			public string title { get; set; }
 
 			[Column]
-			[Field(Expression = ".//h3[@class='c-title']/a/@href")]
-			public string Url { get; set; }
+			[Field(Expression = ".//a[@class='xst']/@href")]
+			public string link { get; set; }
 
 			[Column]
-			[Field(Expression = ".//div/p[@class='c-author']/text()")]
-			[ReplaceFormatter(NewValue = "-", OldValue = "&nbsp;")]
-			public string Website { get; set; }
+			[Field(Expression = ".//span[@class='xi1']")]
+			//[ReplaceFormatter(NewValue = "", OldValue = "人参与")]
+			public string guid { get; set; }
+
 
 			[Column]
-			[Field(Expression = ".//div/span/a[@class='c-cache']/@href")]
-			public string Snapshot { get; set; }
+			[Field(Expression = ".//img[@alt='recommend']/@title")]
+			public string recommend { get; set; }
 
 			[Column]
-			[Field(Expression = ".//div[@class='c-summary c-row ']", Option = FieldOptions.InnerText)]
-			[ReplaceFormatter(NewValue = "", OldValue = "<em>")]
-			[ReplaceFormatter(NewValue = "", OldValue = "</em>")]
-			[ReplaceFormatter(NewValue = " ", OldValue = "&nbsp;")]
-			public string Details { get; set; }
+			[Field(Expression = ".//img[@alt='heatlevel']/@title")]
+			public string heatlevel { get; set; }
+			[Column]
+			[Field(Expression = ".//img[@alt='agree']/@title")]
+			public string agree { get; set; }
 
-			[Column(0)]
-			[Field(Expression = ".", Option = FieldOptions.InnerText)]
-			[ReplaceFormatter(NewValue = "", OldValue = "<em>")]
-			[ReplaceFormatter(NewValue = "", OldValue = "</em>")]
-			[ReplaceFormatter(NewValue = " ", OldValue = "&nbsp;")]
-			public string PlainText { get; set; }
+			[Column]
+			[Field(Expression = ".//em/span")]
+			public string description { get; set; }
 		}
 	}
 }

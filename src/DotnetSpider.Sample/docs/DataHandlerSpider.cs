@@ -125,6 +125,8 @@ namespace DotnetSpider.Sample.docs
 
 			[Field(Expression = "$.user_id", Type = SelectorType.JsonPath)]
 			public string user_id { get; set; }
+
+		
 		}
 	}
 }

@@ -49,5 +49,9 @@ namespace DotnetSpider.Extension.Downloader
 		[Field(Expression = "", Type = SelectorType.Enviroment)]
 		[Column]
 		public string Content { get; set; }
+
+	
+
+	
 	}
 }

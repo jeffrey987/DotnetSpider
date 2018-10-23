@@ -37,6 +37,9 @@ namespace DotnetSpider.Sample.docs
 			[Update]
 			[Field(Expression = "$.shopId", Type = SelectorType.JsonPath)]
 			public int ShopId { get; set; }
+		
+
+		
 		}
 	}
 }

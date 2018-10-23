@@ -65,6 +65,8 @@ namespace DotnetSpider.Sample.docs
 			[Field(Expression = ".")]
 			[Column(Length = 0)]
 			public string Html { get; set; }
+
+		
 		}
 	}
 }

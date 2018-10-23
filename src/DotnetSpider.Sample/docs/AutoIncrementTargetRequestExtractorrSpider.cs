@@ -27,7 +27,8 @@ namespace DotnetSpider.Sample.docs
 				Identity = ("cnblogs_" + DateTime.Now.ToString("yyyy_MM_dd_HHmmss"));
 				AddRequests("https://news.cnblogs.com/n/page/1");
 				AddPipeline(new ConsoleEntityPipeline());
-				AddEntityType<News>().SetRequestExtractor(new AutoIncrementRequestExtractor("page/1"));
+				AddEntityType<News>();
+				//AddEntityType<News>().SetRequestExtractor(new AutoIncrementRequestExtractor("page/1"));
 			}
 
 			[Entity(Expression = "//div[@class='news_block']")]

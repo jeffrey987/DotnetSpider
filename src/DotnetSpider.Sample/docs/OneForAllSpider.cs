@@ -37,6 +37,8 @@ namespace DotnetSpider.Sample.docs
 				[RegexAppendFormatter(Pattern = "http://list.jd.com/list.html\\?cat=[0-9]+", AppendValue = "&page=1&trans=1&JL=6_0_0")]
 				[Field(Expression = "./@href")]
 				public string Url { get; set; }
+
+		
 			}
 
 			[Entity(Expression = "//li[@class='gl-item']/div[contains(@class,'j-sku-item')]")]
@@ -55,6 +57,7 @@ namespace DotnetSpider.Sample.docs
 
 				[Field(Expression = "./@data-sku")]
 				public string Sku { get; set; }
+			
 			}
 
 			[Target(XPaths = new[] { "//span[@class=\"p-num\"]" }, Patterns = new[] { @"&page=[0-9]+&" })]
@@ -87,6 +90,7 @@ namespace DotnetSpider.Sample.docs
 				[Download]
 				[Field(Expression = "//*[@class='brand-logo']/a[1]/img[1]/@src")]
 				public string Logo { get; set; }
+			
 			}
 		}
 	}

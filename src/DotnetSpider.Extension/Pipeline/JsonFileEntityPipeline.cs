@@ -6,6 +6,7 @@ using System.Text;
 using DotnetSpider.Core;
 using DotnetSpider.Extension.Model;
 using DotnetSpider.Extraction.Model;
+using Newtonsoft.Json;
 
 namespace DotnetSpider.Extension.Pipeline
 {
@@ -65,7 +66,8 @@ namespace DotnetSpider.Extension.Pipeline
 
 			foreach (var entry in datas)
 			{
-				writer.WriteLine(entry.ToString());
+				string json = JsonConvert.SerializeObject(entry);
+				writer.WriteLine(json);
 			}
 			return datas.Count();
 		}

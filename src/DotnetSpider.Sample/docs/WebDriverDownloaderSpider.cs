@@ -64,6 +64,8 @@ namespace DotnetSpider.Sample.docs
 			[Field(Expression = "./@jdzy_shop_id")]
 			[Column(Length = 20)]
 			public string JdzyShopId { get; set; }
+
+		
 		}
 	}
 }
