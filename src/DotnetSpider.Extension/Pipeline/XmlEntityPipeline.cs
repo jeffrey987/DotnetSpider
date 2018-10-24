@@ -44,7 +44,7 @@ namespace DotnetSpider.Extension.Pipeline
 				writer.Value.Dispose();
 			}
 		}
-
+		
 		/// <summary>
 		/// 把解析到的爬虫实体数据序列化成Xml并存到文件中
 		/// </summary>
@@ -53,12 +53,12 @@ namespace DotnetSpider.Extension.Pipeline
 		/// <param name="sender">调用方</param>
 		/// <returns>最终影响结果数量(如数据库影响行数)</returns>
 		[MethodImpl(MethodImplOptions.Synchronized)]
-		protected override int Process(IEnumerable<IBaseEntity> datas, dynamic sender = null)
+		protected  HttpResponseMessage Process(IEnumerable<IBaseEntity> datas)
 		{
 
 			if (datas == null || datas.Count() == 0)
 			{
-				return 0;
+				return null;
 			}
 		
 			Rss feed = new Rss();
@@ -86,7 +86,8 @@ namespace DotnetSpider.Extension.Pipeline
 			Stream stream = new MemoryStream();
 			serializer.Serialize(stream,feed);			
 			response.Content = new StreamContent(stream);
-			return datas.Count();
+			Console.WriteLine("HttpResponseMessage");
+			return null;
 		}
 
 		private static List<Dictionary<string, string>> NewMethod(IEnumerable<IBaseEntity> datas)
@@ -105,6 +106,12 @@ namespace DotnetSpider.Extension.Pipeline
 				list.Add(dic);
 			}
 			return list;
+		}
+
+		protected override int Process(IEnumerable<IBaseEntity> datas, dynamic sender )
+		{
+			Console.WriteLine($"Store: test");
+			throw new NotImplementedException();
 		}
 	}
 }

@@ -719,7 +719,7 @@ namespace DotnetSpider.Core
 		}
 
 		/// <summary>
-		/// Run spider.
+		/// Run spider.运行爬虫
 		/// </summary>
 		/// <param name="arguments">运行参数</param>
 		protected override void Execute(params string[] arguments)

@@ -16,7 +16,7 @@ namespace DotnetSpider.Broker.Controllers
 			TestSpider spider = new TestSpider();
 
 			spider.Run();
-			red
+			
 			return View();
 		}
 	}
