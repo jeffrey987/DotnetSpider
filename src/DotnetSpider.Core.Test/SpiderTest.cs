@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DotnetSpider.Downloader;
 using DotnetSpider.Core.Scheduler;
+using System.Net.Http;
 
 namespace DotnetSpider.Core.Test
 {
@@ -149,6 +150,8 @@ namespace DotnetSpider.Core.Test
 					}
 				}
 			}
+
+		
 		}
 
 		internal class TestPageProcessor : BasePageProcessor
@@ -271,6 +274,8 @@ namespace DotnetSpider.Core.Test
 			{
 				File.AppendAllLines("FastExit_Result.txt", new[] { resultItems.First().Request.Url.ToString() });
 			}
+
+		
 		}
 
 		//[Fact]

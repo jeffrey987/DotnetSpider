@@ -7,6 +7,7 @@ using DotnetSpider.Core.Scheduler;
 using DotnetSpider.Extraction;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 
 namespace DotnetSpider.Sample.docs
 {
@@ -62,6 +63,8 @@ namespace DotnetSpider.Sample.docs
 				}
 				// 可以自由实现插入数据库或保存到文件
 			}
+
+	
 		}
 
 		private class BlogSumaryProcessor : BasePageProcessor

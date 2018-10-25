@@ -22,6 +22,9 @@ namespace DotnetSpider.Extension.Pipeline
 		/// <returns>最终影响结果数量(如数据库影响行数)</returns>
 		protected abstract int Process(IEnumerable<IBaseEntity> datas, dynamic sender = null);
 
+
+		//protected abstract HttpResponseMessage ProcessHttp(IEnumerable<IBaseEntity> datas, dynamic sender = null);
+
 		/// <summary>
 		/// 处理页面解析器解析到的数据结果
 		/// </summary>
@@ -72,6 +75,7 @@ namespace DotnetSpider.Extension.Pipeline
 					{
 						resultItem.Request.AddCountOfResults(kv2.Value.Count);
 						int effectedRows = Process(kv2.Value, sender);
+						
 						resultItem.Request.AddEffectedRows(effectedRows);
 					}
 				}

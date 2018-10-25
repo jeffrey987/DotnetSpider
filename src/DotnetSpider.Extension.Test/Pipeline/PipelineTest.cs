@@ -13,6 +13,7 @@ using DotnetSpider.Extraction.Model.Formatter;
 using DotnetSpider.Extraction;
 using DotnetSpider.Extraction.Model;
 using DotnetSpider.Extension.Model;
+using System.Net.Http;
 
 namespace DotnetSpider.Extension.Test.Pipeline
 {
@@ -47,6 +48,8 @@ namespace DotnetSpider.Extension.Test.Pipeline
 				{
 
 				}
+
+			
 			}
 
 			[Schema("baidu", "baidu_search_mixprocessor")]
@@ -119,7 +122,7 @@ namespace DotnetSpider.Extension.Test.Pipeline
 
 			var id = Guid.NewGuid().ToString("N");
 			BaiduSearchSpider spider = new BaiduSearchSpider();
-			spider.AddPipeline(new MySqlEntityPipeline(DefaultConnectionString));
+			//spider.AddPipeline(new MySqlEntityPipeline(DefaultConnectionString));
 			spider.Identity = id;
 			spider.Run();
 

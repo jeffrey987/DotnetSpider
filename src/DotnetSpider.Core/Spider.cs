@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using DotnetSpider.Core.Infrastructure;
+using System.Net.Http;
 #if NETFRAMEWORK
 using System.Net;
 #else
@@ -39,6 +40,7 @@ namespace DotnetSpider.Core
 		private IScheduler _scheduler = new QueueDuplicateRemovedScheduler();
 		private IDownloader _downloader = new HttpClientDownloader();
 		private List<ResultItems> _cached;
+
 		private int _waitCountLimit = 1500;
 		private bool _inited;
 		private int _threadNum = 1;
@@ -137,7 +139,7 @@ namespace DotnetSpider.Core
 		/// Storage all processors for spider.
 		/// </summary>
 		public readonly List<IPageProcessor> PageProcessors = new List<IPageProcessor>();
-
+		
 		/// <summary>
 		/// Interval time wait for new url.
 		/// </summary>
@@ -1040,6 +1042,7 @@ namespace DotnetSpider.Core
 				if (containsData)
 				{
 					pipeline.Process(_cached.ToArray(), this);
+					
 				}
 
 				SafeDestroy(pipeline);
@@ -1172,7 +1175,7 @@ namespace DotnetSpider.Core
 			ResultItems[] resultItems = new ResultItems[0];
 			if (PipelineCachedSize == 1)
 			{
-				resultItems = new[] {page.ResultItems};
+				resultItems = new[] { page.ResultItems };
 			}
 			else
 			{

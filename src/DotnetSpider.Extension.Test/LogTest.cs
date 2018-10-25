@@ -10,6 +10,7 @@ using System.Linq;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using DotnetSpider.Downloader;
+using System.Net.Http;
 
 namespace DotnetSpider.Extension.Test
 {
@@ -92,6 +93,8 @@ namespace DotnetSpider.Extension.Test
 				}
 			}
 		}
+
+	
 	}
 
 	internal class TestPageProcessor : BasePageProcessor

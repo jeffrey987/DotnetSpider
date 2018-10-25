@@ -44,53 +44,14 @@ namespace DotnetSpider.Extension.Pipeline
 				writer.Value.Dispose();
 			}
 		}
-		
+
 		/// <summary>
-		/// 把解析到的爬虫实体数据序列化成Xml并存到文件中
+		///turn datas to list<dictionary<string,string>>
 		/// </summary>
-		/// <param name="entityName">爬虫实体类的名称</param>
-		/// <param name="datas">实体类数据</param>
-		/// <param name="sender">调用方</param>
-		/// <returns>最终影响结果数量(如数据库影响行数)</returns>
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		protected  HttpResponseMessage Process(IEnumerable<IBaseEntity> datas)
-		{
+		/// <param name="datas"></param>
+		/// <returns></returns>
 
-			if (datas == null || datas.Count() == 0)
-			{
-				return null;
-			}
-		
-			Rss feed = new Rss();
-			feed.channel.title = Title;
-			feed.channel.link = Link;
-			feed.channel.description = Description;
-			feed.channel.lastBuildDate = DateTime.Now.ToString();
-
-			var lists = NewMethod(datas);
-			foreach (var itemr in lists)
-			{
-				Item model = new Item();
-				model.title = itemr["title"];
-				model.description = itemr["description"];
-				model.guid = itemr["guid"];
-				model.link = itemr["link"];
-
-				feed.channel.item.Add(model);
-			}
-			var serializer = new XmlSerializer(typeof(Rss));
-			System.Net.Http.HttpRequestMessage _request = new System.Net.Http.HttpRequestMessage();
-
-			HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-			
-			Stream stream = new MemoryStream();
-			serializer.Serialize(stream,feed);			
-			response.Content = new StreamContent(stream);
-			Console.WriteLine("HttpResponseMessage");
-			return null;
-		}
-
-		private static List<Dictionary<string, string>> NewMethod(IEnumerable<IBaseEntity> datas)
+		private static List<Dictionary<string, string>> GetListDic(IEnumerable<IBaseEntity> datas)
 		{
 			List<Dictionary<string, string>> list = new List<Dictionary<string, string>>();
 			foreach (var itemrss in datas)
@@ -108,10 +69,37 @@ namespace DotnetSpider.Extension.Pipeline
 			return list;
 		}
 
-		protected override int Process(IEnumerable<IBaseEntity> datas, dynamic sender )
+		protected override int Process(IEnumerable<IBaseEntity> datas, dynamic sender)
 		{
-			Console.WriteLine($"Store: test");
-			throw new NotImplementedException();
+			if (datas == null || datas.Count() == 0)
+			{
+				return 0;
+			}
+
+			Rss feed = new Rss();
+			feed.channel.title = Title;
+			feed.channel.link = Link;
+			feed.channel.description = Description;
+			feed.channel.lastBuildDate = DateTime.Now.ToString();
+
+			var lists = GetListDic(datas);
+			foreach (var itemr in lists)
+			{
+				Item model = new Item();
+				model.title = itemr["title"];
+				model.description = itemr["description"];
+				model.guid = itemr["guid"];
+				model.link = itemr["link"];
+
+				feed.channel.item.Add(model);
+			}
+			var serializer = new XmlSerializer(typeof(Rss));
+			Stream stream = new MemoryStream();
+			serializer.Serialize(stream, feed);
+			var result = new ResultItems();
+			Httpresponse.Content = new StreamContent(stream);
+
+			return datas.Count();
 		}
 	}
 }

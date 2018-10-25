@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 
 namespace DotnetSpider.Core.Pipeline
 {
@@ -9,6 +10,13 @@ namespace DotnetSpider.Core.Pipeline
 	/// </summary>
 	public interface IPipeline : IDisposable
 	{
+		/// <summary>
+		/// 数据结果
+		/// </summary>
+		HttpResponseMessage Httpresponse { get; set; }
+		/// <summary>
+		/// 日志
+		/// </summary>
 		ILogger Logger { get; set; }
 
 		/// <summary>
@@ -16,6 +24,7 @@ namespace DotnetSpider.Core.Pipeline
 		/// </summary>
 		/// <param name="resultItems">数据结果</param>
 		/// <param name="sender">调用方</param>
-		void Process(IList<ResultItems> resultItems, dynamic sender = null);
+		void Process(IList<ResultItems> _sresultItems, dynamic sender = null);
+
 	}
 }

@@ -6,6 +6,7 @@ using DotnetSpider.Downloader;
 using DotnetSpider.Extraction;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 
 namespace DotnetSpider.Sample.docs
@@ -54,6 +55,8 @@ namespace DotnetSpider.Sample.docs
 
 				// Storage data to DB. 可以自由实现插入数据库或保存到文件
 			}
+
+
 		}
 
 		private class YoukuPageProcessor : BasePageProcessor
