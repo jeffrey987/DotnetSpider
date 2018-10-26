@@ -11,6 +11,8 @@ using System.Xml.Serialization;
 using System;
 using System.Net.Http;
 using System.Net;
+using System.Xml.Linq;
+using System.Runtime.Serialization;
 
 namespace DotnetSpider.Extension.Pipeline
 {
@@ -71,12 +73,13 @@ namespace DotnetSpider.Extension.Pipeline
 
 		protected override int Process(IEnumerable<IBaseEntity> datas, dynamic sender)
 		{
+			ResponseMessage = new System.Xml.Linq.XDocument();
 			if (datas == null || datas.Count() == 0)
 			{
 				return 0;
 			}
 
-			Rss feed = new Rss();
+			rss feed = new rss();
 			feed.channel.title = Title;
 			feed.channel.link = Link;
 			feed.channel.description = Description;
@@ -85,7 +88,7 @@ namespace DotnetSpider.Extension.Pipeline
 			var lists = GetListDic(datas);
 			foreach (var itemr in lists)
 			{
-				Item model = new Item();
+				item model = new item();
 				model.title = itemr["title"];
 				model.description = itemr["description"];
 				model.guid = itemr["guid"];
@@ -93,12 +96,15 @@ namespace DotnetSpider.Extension.Pipeline
 
 				feed.channel.item.Add(model);
 			}
-			var serializer = new XmlSerializer(typeof(Rss));
-			Stream stream = new MemoryStream();
-			serializer.Serialize(stream, feed);
-			var result = new ResultItems();
-			Httpresponse.Content = new StreamContent(stream);
 
+			XDocument doc = new XDocument();
+			using (var writer = doc.CreateWriter())
+			{
+				// write xml into the writer
+				var serializer = new DataContractSerializer(feed.GetType());
+				serializer.WriteObject(writer, feed);
+			}
+			ResponseMessage =doc;
 			return datas.Count();
 		}
 	}

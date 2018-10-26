@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 
 namespace DotnetSpider.Core.Pipeline
 {
@@ -13,7 +12,7 @@ namespace DotnetSpider.Core.Pipeline
 		/// <summary>
 		/// 数据结果
 		/// </summary>
-		HttpResponseMessage Httpresponse { get; set; }
+		System.Xml.Linq.XDocument ResponseMessage { get; set; }
 		/// <summary>
 		/// 日志
 		/// </summary>

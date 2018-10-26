@@ -12,19 +12,16 @@ namespace DotnetSpider.Extension.Model
 	/// 
 	/// </summary>
 	[XmlRoot("rss")]
-	public class Rss : IRss
+	public class rss : IRss
 	{
 		[XmlAttribute]
 		public string version { get; set; } = "2.0";
-		public Channel channel { get; set; } = new Channel();
+		public channel channel { get; set; } = new channel();
 
-		public override Item ToRssItem()
-		{
-			throw new NotImplementedException();
-		}
+
 	}
 	[XmlRoot("channel")]
-	public class Channel
+	public class channel
 	{
 		public string title { get; set; }
 		public string link { get; set; }
@@ -39,7 +36,16 @@ namespace DotnetSpider.Extension.Model
 		public string ttl { get; set; }
 
 		[XmlElement]
-		public List<Item> item { get; set; } = new List<Item>();
+	
+		public List<Extension.Model.item> item { get; set; } = new List<item>();
+	}
+	[XmlRoot("item")]
+	public class item
+	{
+		public string title { get; set; }
+		public string link { get; set; }
+		public string guid { get; set; }
+		public string description { get; set; }
 	}
 
 

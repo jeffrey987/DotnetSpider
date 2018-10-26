@@ -77,7 +77,7 @@ namespace DotnetSpider.Extension.Pipeline
 				writer = new StreamWriter(File.OpenWrite(jsonFile), Encoding.UTF8);
 				_writers.Add(jsonFile, writer);
 			}
-			Rss feed = new Rss();
+			rss feed = new rss();
 			feed.channel.title = Title;
 			feed.channel.link = Link;
 			feed.channel.description = Description;
@@ -86,7 +86,7 @@ namespace DotnetSpider.Extension.Pipeline
 			var lists = NewMethod(datas);
 			foreach (var itemr in lists)
 			{
-				Item model = new Item();
+				Extension.Model.item model = new Extension.Model.item();
 				model.title = itemr["title"];
 				model.description = itemr["description"];
 				model.guid = itemr["guid"];
@@ -94,7 +94,7 @@ namespace DotnetSpider.Extension.Pipeline
 
 				feed.channel.item.Add(model);
 			}
-			var serializer = new XmlSerializer(typeof(Rss));
+			var serializer = new XmlSerializer(typeof(rss));
 			serializer.Serialize(writer, feed);
 
 
