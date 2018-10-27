@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Net;
 using System.Xml.Linq;
 using System.Runtime.Serialization;
+using DotnetSpider.Extension.Scheduler;
 
 namespace DotnetSpider.Extension.Pipeline
 {
@@ -74,37 +75,45 @@ namespace DotnetSpider.Extension.Pipeline
 		protected override int Process(IEnumerable<IBaseEntity> datas, dynamic sender)
 		{
 			ResponseMessage = new System.Xml.Linq.XDocument();
+			XDocument doc = new XDocument();
 			if (datas == null || datas.Count() == 0)
 			{
 				return 0;
 			}
-
-			rss feed = new rss();
-			feed.channel.title = Title;
-			feed.channel.link = Link;
-			feed.channel.description = Description;
-			feed.channel.lastBuildDate = DateTime.Now.ToString();
-
-			var lists = GetListDic(datas);
-			foreach (var itemr in lists)
+			doc = (XDocument)CacheScheduler.GetCache(Link);
+			if (doc == null)
 			{
-				item model = new item();
-				model.title = itemr["title"];
-				model.description = itemr["description"];
-				model.guid = itemr["guid"];
-				model.link = itemr["link"];
 
-				feed.channel.item.Add(model);
-			}
+				rss feed = new rss();
+				feed.channel.title = Title;
+				feed.channel.link = Link;
+				feed.channel.description = Description;
+				feed.channel.lastBuildDate = DateTime.Now.ToString();
 
-			XDocument doc = new XDocument();
-			using (var writer = doc.CreateWriter())
-			{
-				// write xml into the writer
-				var serializer = new DataContractSerializer(feed.GetType());
-				serializer.WriteObject(writer, feed);
+
+				var lists = GetListDic(datas);
+				foreach (var itemr in lists)
+				{
+					item model = new item();
+					model.title = itemr["title"];
+					model.description = itemr["description"];
+					model.guid = itemr["guid"];
+					model.link = itemr["link"];
+
+					feed.channel.item.Add(model);
+				}
+
+
+				using (var writer = doc.CreateWriter())
+				{
+					// write xml into the writer
+					var serializer = new DataContractSerializer(feed.GetType());
+					serializer.WriteObject(writer, feed);
+				} /**/
+				CacheScheduler.SetCache(Link, doc, DateTime.Now.AddMinutes(30), TimeSpan.Zero);
 			}
-			ResponseMessage =doc;
+			ResponseMessage = doc;
+
 			return datas.Count();
 		}
 	}
