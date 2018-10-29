@@ -110,7 +110,7 @@ namespace DotnetSpider.Extension.Pipeline
 					var serializer = new DataContractSerializer(feed.GetType());
 					serializer.WriteObject(writer, feed);
 				} /**/
-				CacheScheduler.SetCache(Link, doc, DateTime.Now.AddMinutes(30), TimeSpan.Zero);
+				CacheScheduler.AddCache(Link, doc);
 			}
 			ResponseMessage = doc;
 
