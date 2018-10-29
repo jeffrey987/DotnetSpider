@@ -25,5 +25,9 @@ namespace DotnetSpider.Broker.Controllers
 			//Request.ContentType
 			return Content(message.ToString());
 		}
+		public IActionResult Book()
+		{
+			return View();
+		}
 	}
 }

@@ -75,15 +75,15 @@ namespace DotnetSpider.Extension.Pipeline
 		protected override int Process(IEnumerable<IBaseEntity> datas, dynamic sender)
 		{
 			ResponseMessage = new System.Xml.Linq.XDocument();
-			XDocument doc = new XDocument();
+			XDocument doc = null; ;
 			if (datas == null || datas.Count() == 0)
 			{
 				return 0;
 			}
-			doc = (XDocument)CacheScheduler.GetCache(Link);
+			//doc = (XDocument)CacheScheduler.GetCache(Link);
 			if (doc == null)
 			{
-
+				doc = new XDocument();
 				rss feed = new rss();
 				feed.channel.title = Title;
 				feed.channel.link = Link;
@@ -110,7 +110,7 @@ namespace DotnetSpider.Extension.Pipeline
 					var serializer = new DataContractSerializer(feed.GetType());
 					serializer.WriteObject(writer, feed);
 				} /**/
-				CacheScheduler.AddCache(Link, doc);
+				  //CacheScheduler.AddCache(Link, doc);
 			}
 			ResponseMessage = doc;
 
