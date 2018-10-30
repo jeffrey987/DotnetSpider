@@ -9,6 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="20181026.log" />
+    <None Remove="20181030.log" />
+    <None Remove="dotnetspider-20181030.log" />
+    <None Remove="dotnetspider-20181030_001.log" />
+    <None Remove="dotnetspider-20181030_002.log" />
+    <None Remove="dotnetspider-20181030_003.log" />
+    <None Remove="dotnetspider-20181030_004.log" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CacheManager.Core" Version="1.1.2" />
     <PackageReference Include="CacheManager.SystemRuntimeCaching" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -29,6 +39,12 @@
     <ProjectReference Include="..\DotnetSpider.Extension\DotnetSpider.Extension.csproj" />
     <ProjectReference Include="..\DotnetSpider.Proxy\DotnetSpider.Proxy.csproj" />
     <ProjectReference Include="..\DotnetSpider.Sample\DotnetSpider.Sample.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Book\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

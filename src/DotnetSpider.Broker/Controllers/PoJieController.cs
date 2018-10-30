@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using DotnetSpider.Core.Pipeline;
-using DotnetSpider.Extension.Model;
+﻿using DotnetSpider.Core.Pipeline;
 using DotnetSpider.Sample;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,9 +21,6 @@ namespace DotnetSpider.Broker.Controllers
 			//Request.ContentType
 			return Content(message.ToString());
 		}
-		public IActionResult Book()
-		{
-			return View();
-		}
+		
 	}
 }
