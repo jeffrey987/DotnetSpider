@@ -1,4 +1,5 @@
 ﻿using DotnetSpider.Core;
+using DotnetSpider.Core.Processor;
 using DotnetSpider.Core.Processor.RequestExtractor;
 using DotnetSpider.Extension;
 using DotnetSpider.Extension.Model;
@@ -14,23 +15,23 @@ namespace DotnetSpider.Sample
 	[TaskName("TestSpider")]
 	public class TestSpider : EntitySpider
 	{
-		public TestSpider() :base()
-		{		
+		public TestSpider() : base()
+		{
 		}
 
 		protected override void OnInit(params string[] arguments)
 		{
 			Dictionary<string, object> headers = new Dictionary<string, object>();
-			headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");				
+			headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
 			headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36");
 			headers.Add("Request Method", "POST");
 			AddHeaders("jzsc.mohurd.gov.cn", headers);
-			AddRequests("http://jzsc.mohurd.gov.cn/dataservice/query/comp/list?$pg=2");
+			AddRequests("http://jzsc.mohurd.gov.cn/dataservice/query/comp/list?$pg=1");
 			EntityProcessor<BaiduSearchEntry> tempmodel = AddEntityType<BaiduSearchEntry>();
 			var pipeine = new ExcelEntityPipeline();
 
 			AddPipeline(pipeine);
-			AddEntityType<BaiduSearchEntry>().SetRequestExtractor(new AutoIncrementRequestExtractor("$pg=2",1));
+			AddEntityType<BaiduSearchEntry>().SetRequestExtractor(new AutoIncrementRequestExtractor(@"\$pg=1", 1)).SetLastPageChecker(new TestLastPageChecker()); ;
 		}
 
 		[Schema("baidu", "mohurd")]
@@ -57,7 +58,7 @@ namespace DotnetSpider.Sample
 			[Column]
 			[Field(Expression = ".//td[@data-header='企业法定代表人']")]
 			public string people { get; set; }
-	
+
 
 			[Column]
 			[Field(Expression = ".//td[@data-header='企业注册属地']")]
@@ -65,7 +66,16 @@ namespace DotnetSpider.Sample
 
 			[Column]
 			[Field(Expression = ".//td[@data-header='序号']")]
-			public  int Id { get; set; }
+			public int Id { get; set; }
+		}
+
+
+		private class TestLastPageChecker : ILastPageChecker
+		{
+			public bool IsLastPage(Page page)
+			{
+				return page.Request.Url.Contains("$pg=4");
+			}
 		}
 	}
 }
