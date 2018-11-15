@@ -41,6 +41,7 @@ namespace DotnetSpider.Core.Processor.RequestExtractor
 			{
 				var next = RegexUtil.Number.Replace(_paginationStr, (currentPage + _interval).ToString());
 				string newUrl = page.Request.Url.Replace(currentPageStr, next);
+				newUrl = newUrl.Replace(@"\\","");
 				return new[] { new Request(newUrl, page.CopyProperties()) };
 			}
 
