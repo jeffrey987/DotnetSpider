@@ -10,12 +10,12 @@ using DotnetSpider.Extraction.Model.Formatter;
 using System;
 using System.Collections.Generic;
 
-namespace DotnetSpider.Sample
+namespace DotnetSpider.Sample.mohurd
 {
-	[TaskName("TestSpider")]
-	public class TestSpider : EntitySpider
+	[TaskName("comp")]
+	public class comp : EntitySpider
 	{
-		public TestSpider() : base()
+		public comp() : base()
 		{
 		}
 
