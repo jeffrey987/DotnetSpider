@@ -52,7 +52,9 @@ namespace DotnetSpider.Sample.mohurd
 			[Field(Expression = "total\":\\d*", Type = SelectorType.Regex)]
 			public string Category { get; set; }
 
-			
+			[Column]
+			[Field(Expression = ".//input[@id='jsxm_region_id']/value", Type = SelectorType.Css)]
+			public string MyProperty { get; set; }
 		}
 
 
