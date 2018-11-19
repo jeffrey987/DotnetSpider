@@ -33,17 +33,20 @@ namespace DotnetSpider.Sample.mohurd
 			headers.Add("Request Method", "GET");
 			AddHeaders("jzsc.mohurd.gov.cn", headers);
 			List<string> provinces = GetProvinces();
-			foreach (var item in provinces.Take(5))
+			List<string> JsxmTypeList = new List<string>() { "房屋建筑工程", "市政工程", "其他" };
+			foreach (var item in provinces.Take(30))
 			{
-				AddRequests("http://jzsc.mohurd.gov.cn/dataservice/query/project/list?$pg=1&jsxm_region_id=" + item);
-				EntityProcessor<BaiduSearchEntry2> tempmodel = AddEntityType<BaiduSearchEntry2>();
+				foreach (var typeitem in JsxmTypeList)
+				{
+					AddRequests(string.Format("http://jzsc.mohurd.gov.cn/dataservice/query/project/list?$pg=1&jsxm_region_id={0}&jsxm_type={1}", item, typeitem));
+					EntityProcessor<BaiduSearchEntry2> tempmodel = AddEntityType<BaiduSearchEntry2>();
+				}
 			}
-				//AddEntityType<BaiduSearchEntry2>().SetRequestExtractor(new AutoIncrementRequestExtractor(@"\$pg=1", 1)).SetLastPageChecker(new TestLastPageChecker());  
-				AddPipeline(new JsonFileEntityPipeline());
+			AddPipeline(new JsonFileEntityPipeline());
+			//AddEntityType<BaiduSearchEntry2>().SetRequestExtractor(new AutoIncrementRequestExtractor(@"\$pg=1", 1)).SetLastPageChecker(new TestLastPageChecker());  
 		}
 
-
-
+		//?和id不能使用
 		[Schema("project", "项目数据")]
 		[Entity(Expression = "html")]
 		public class BaiduSearchEntry2 : BaseEntity
@@ -53,8 +56,8 @@ namespace DotnetSpider.Sample.mohurd
 			public string Category { get; set; }
 
 			[Column]
-			[Field(Expression = ".//input[@id='jsxm_region_id']/value", Type = SelectorType.Css)]
-			public string MyProperty { get; set; }
+			[Field(Expression = "jsxm_region_id=\\d*", Type = SelectorType.Regex)]
+			public string RegionID { get; set; }
 		}
 
 
@@ -69,7 +72,8 @@ namespace DotnetSpider.Sample.mohurd
 		{
 			List<string> list = new List<string>();
 			Wdkk.Excel.ExcelHelper helper = new ExcelHelper();
-			Stream stream = new FileStream("D:/github/DotnetSpider/src/DotnetSpider.Sample/excel/ProvincesCode.xlsx", FileMode.Open, FileAccess.Read);
+			//“E:\working\DotnetSpider\src\DotnetSpider.Sample\bin\
+			Stream stream = new FileStream(".../.../.../excel/ProvincesCode.xlsx", FileMode.Open, FileAccess.Read);
 			var table = helper.ExcelToDataTable(stream, "id;name;address", "xlsx");
 			foreach (DataRow item in table.Rows)
 			{

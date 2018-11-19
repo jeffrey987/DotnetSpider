@@ -24,7 +24,8 @@ namespace DotnetSpider.Sample
 			//});
 
 			//AutoIncrementTargetRequestExtractorrSpider.Run();
-			//AfterDownloadCompleteHandlerSpider.Run();
+			//CustmizeProcessorAndPipelineSpider.Run();
+
 			project spider = new project();
 			spider.Run();
 		}
